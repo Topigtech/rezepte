@@ -1,6 +1,6 @@
 # SousChef Rezepte 🍽️
 
-Persönliche vegane Rezeptsammlung auf Sterneküchen-Niveau — optimiert für den **Cookidoo-Import** via Schema.org/Recipe JSON-LD.
+Persönliche vegane Rezeptsammlung  optimiert für den **Cookidoo-Import** via Schema.org/Recipe JSON-LD.
 
 ---
 
