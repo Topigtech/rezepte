@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SousChef Rezepte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1612;
+      --paper: #f6f1eb;
+      --paper-warm: #efe8df;
+      --accent: #c4502a;
+      --accent-muted: #d4896e;
+      --miso: #c8a96e;
+      --sesame: #3a3228;
+      --border: #d6cec4;
+      --text-secondary: #6b6058;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3.5rem;
+      position: relative;
+      background: linear-gradient(175deg, var(--paper) 0%, var(--paper-warm) 100%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '料理';
+      position: absolute;
+      top: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9rem;
+      color: var(--miso);
+      opacity: 0.05;
+      font-weight: 600;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent-muted);
+      padding: 0.3em 0.9em;
+      border-radius: 2px;
+    }
+
+    /* Recipes grid */
+    .recipes-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+      flex: 1;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Recipe card */
+    .recipe-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1rem;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .recipe-card:hover {
+      border-color: var(--miso);
+      box-shadow: 0 4px 20px rgba(26, 22, 18, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .recipe-card::after {
+      content: '→';
+      position: absolute;
+      right: 1.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--miso);
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .recipe-card:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(3px);
+    }
+
+    .card-cuisine {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 1.25;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-description {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      max-width: 85%;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 0.8rem;
+    }
+
+    .card-meta-item {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+    }
+
+    .card-meta-item strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* Empty state */
+    .empty-hint {
+      text-align: center;
+      padding: 2rem;
+      border: 1px dashed var(--border);
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .empty-hint p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-hint code {
+      font-size: 0.8rem;
+      background: var(--paper-warm);
+      padding: 0.15em 0.4em;
+      border-radius: 2px;
+      color: var(--sesame);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+    }
+
+    footer span { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 3rem 1.2rem 2.5rem; }
+      .recipes-section { padding: 2rem 1.2rem 3rem; }
+      .recipe-card { padding: 1.2rem 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1 class="logo-text">Sous<span>Chef</span></h1>
+    <p class="tagline">Vegane Rezepte auf Sterneküchen-Niveau — optimiert für Thermomix und Cookidoo-Import</p>
+    <div class="badges">
+      <span class="badge">100 % Vegan</span>
+      <span class="badge">Thermomix-optimiert</span>
+      <span class="badge">Cookidoo-kompatibel</span>
+    </div>
+  </header>
+
+  <main class="recipes-section">
+    <div class="section-label">Rezepte</div>
+
+    <!-- Rezept-Karten: Neue Rezepte hier einfügen -->
+
+    <a href="rezepte/miso-glasierte-aubergine.html" class="recipe-card">
+      <div class="card-cuisine">Japanisch · Vegan</div>
+      <h2 class="card-title">Miso-glasierte Aubergine mit Sesamkruste</h2>
+      <p class="card-description">Karamellisierte Aubergine mit umami-reicher Miso-Glasur und knuspriger Sesamkruste.</p>
+      <div class="card-meta">
+        <span class="card-meta-item"><strong>55 Min</strong> Gesamt</span>
+        <span class="card-meta-item"><strong>2</strong> Portionen</span>
+        <span class="card-meta-item">Thermomix · Gusseisen · Backofen</span>
+      </div>
+    </a>
+
+    <!--
+    ============================================================
+    NEUE REZEPTE HIER EINFÜGEN:
+    Kopiere den <a class="recipe-card">...</a> Block und passe
+    href, Titel, Beschreibung und Meta-Daten an.
+    ============================================================
+    -->
+
+    <div class="empty-hint">
+      <p>Weitere Rezepte kommen hier hin.<br>
+      Neue HTML-Dateien in <code>rezepte/</code> ablegen und oben verlinken.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    SousChef Rezepte · Alle Rezepte vegan · Schema.org/Recipe JSON-LD für <span>Cookidoo</span>-Import
+  </footer>
+
+</body>
+</html>
